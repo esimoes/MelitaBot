@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes
-import os.path
+from config import Config
 from datetime import datetime, timedelta, time
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
@@ -10,10 +10,8 @@ AUTH_LIST = [-436350771, 568333079]
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
 service = build('calendar', 'v3', credentials=creds)
-CALENDAR_ID = os.environ.get('CALENDAR_ID')
 
-
-async def calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Prints the start and name of the next 15 events on the user's calendar.
     """
@@ -22,7 +20,7 @@ async def calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Call the Calendar API
     now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     days30 = (datetime.utcnow() + timedelta(days=30)).isoformat() + 'Z'
-    events_result = service.events().list(calendarId=CALENDAR_ID, timeMin=now,
+    events_result = service.events().list(calendarId=Config.CALENDAR_ID, timeMin=now,
                                         timeMax=days30, maxResults=15, 
                                         singleEvents=True, orderBy='startTime').execute()
     events = events_result.get('items', [])
@@ -31,12 +29,12 @@ async def calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True)
 
     if not events:
-        answer = "Sorry, you don't have any upcoming events in the next 30 days."
+        answer = "Lo siento, no tengo nada para mostrarte. Prueba en otro momento a que me actualice"
     else:
         i = 1
         answer = ""
         for event in events:       
-            answer += "EVENT #{}".format(i)
+            answer += "\U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916" # Robot face
             answer += "\n<b>{}</b>".format(event['summary']) 
             if event.get('description'):
                 answer += "\n{}".format(event['description'])
@@ -58,4 +56,4 @@ async def calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     except:
         print("error")
 
-calendar_command_handler = CommandHandler('agenda', calendar)
+get_calendar_command_handler = CommandHandler('agenda', get_calendar)

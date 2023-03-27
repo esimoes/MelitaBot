@@ -1,1 +1,1 @@
-from .message_utils import escape_md2_no_links
+#from .daily import daily_update_handler

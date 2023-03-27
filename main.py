@@ -1,27 +1,42 @@
 from telegram.ext import *
-from datetime import datetime, timedelta, time
-import os.path
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
-from google.oauth2 import service_account
-from commands import start_command_handler, calendar_command_handler, poem_command_handler, tellme_command_handler
+import logging
+import sys
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
+from commands import (start_command_handler, 
+                      get_calendar_command_handler, 
+                      poem_command_handler, 
+                      tellme_command_handler,
+                      set_calendar_command_handler)
+
+from handlers import (error_handler, 
+                      unknown_messages)
+
+from config import Config
+from utils.db_utils import check_db
+
+logger = logging.getLogger(__name__)
 
 def main():
 
-    try:
-        application = Application.builder().token(BOT_TOKEN).build()
+    application = Application.builder().token(Config.BOT_TOKEN).build()
 
-        # Register commands
-        application.add_handler(start_command_handler)
-        application.add_handler(calendar_command_handler)
-        application.add_handler(poem_command_handler)
-        application.add_handler(tellme_command_handler)
-    
-        application.run_polling()
-    except:
-        print("Invalid TOKEN")
+    # Check if DB exists DB
+    if not check_db():
+        logger.critical("DB not found!")
+        sys.exit(1)
+
+    # Register commands
+    application.add_handler(start_command_handler)
+    application.add_handler(get_calendar_command_handler)
+    application.add_handler(poem_command_handler)
+    application.add_handler(tellme_command_handler)
+    application.add_handler(set_calendar_command_handler)
+
+    # Register error handlers
+    application.add_error_handler(error_handler)
+    application.add_handler(MessageHandler(filters.ALL, unknown_messages))
+
+    application.run_polling()
 
 if __name__=="__main__":
     main()
