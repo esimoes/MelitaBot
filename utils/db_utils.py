@@ -3,10 +3,11 @@ from contextlib import asynccontextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+#from aiomysql.sa import create_engine
 
 from config import Config
 
-engine = create_engine(Config.DB_URL)
+engine = create_async_engine(Config.DB_URL)
 
 
 @asynccontextmanager
@@ -25,10 +26,11 @@ async def get_session():
 
 
 def check_db() -> bool:
-    sync_engine = create_engine(Config.DB_URL)
+    sync_engine = create_engine(Config.DB_URL.replace("+aiomysql","+pymysql"))
 
     try:
         sync_engine.connect()
         return True
     except SQLAlchemyError:
         return False
+    

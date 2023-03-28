@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from ..base import Base
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'telegram_users'
 
     id = Column(INTEGER, primary_key=True)
     username = Column(VARCHAR(64), nullable=True)

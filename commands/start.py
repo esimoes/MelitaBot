@@ -9,8 +9,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
 
     # Create a new user instance and add it to the database
-    #async with get_session() as session:
-    #    await create_or_update_user(session, user)
+    async with get_session() as session:
+        await create_or_update_user(session, user)
 
     start_message_text = (f"<b>Hola {user.first_name}, encantada de conocerte</b>. Todavia estoy en una etapa de prueba pero ya podés acceder a muchas de mis funcionalidades, consultá mis comandos")
 
