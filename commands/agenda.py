@@ -6,7 +6,6 @@ from datetime import datetime, timedelta, time
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
-AUTH_LIST = [-436350771, 568333079]
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
 service = build('calendar', 'v3', credentials=creds)

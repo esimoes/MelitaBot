@@ -1,4 +1,6 @@
-from telegram.ext import Application,MessageHandler,filters
+from telegram.ext import (Application,
+                          MessageHandler,
+                          filters)
 import logging
 import sys
 
@@ -13,6 +15,8 @@ from handlers import (error_handler,
 
 from config import Config
 from utils.db_utils import check_db
+from utils import daily_update
+import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +28,11 @@ def main():
     if not check_db():
         logger.critical("DB not found!")
         sys.exit(1)
+
+    job_queue = application.job_queue
+    # Create a job that runs daily at 9 a.m.
+    timezone = datetime.timezone(datetime.timedelta(hours=-3))
+    job_queue.run_daily(daily_update, time=datetime.time(hour=8, minute=0,tzinfo=timezone))
 
     # Register commands
     application.add_handler(start_command_handler)

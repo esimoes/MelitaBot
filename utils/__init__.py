@@ -1,1 +1,1 @@
-#from .daily import daily_update_handler
+from .daily import daily_update
