@@ -4,7 +4,6 @@ from telegram.ext import CommandHandler, ContextTypes
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import (
     CommandHandler,
-    BaseHandler,
     ContextTypes,
     ConversationHandler,
     MessageHandler,
@@ -16,7 +15,6 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from typing import Dict
 
-AUTH_LIST = [-436350771, 568333079]
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
 
@@ -168,16 +166,20 @@ async def save_calendar(user_data) -> bool:
 async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Display the gathered info and end the conversation."""
     user_data = context.user_data
+    voice = False
     if "choice" in user_data:
         del user_data["choice"]
 
     if await save_calendar(user_data):
       answer_message_text = (f"Listo! ya registraste tu evento en la Agendita de Melita")
+      voice = True
     else:
       answer_message_text = (f"No he podido registrar el evento")
 
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
-    await update.message.reply_audio("./resources/audio/Evento_registrado.ogg")
+    if voice:
+      await update.message.reply_audio("./resources/audio/Evento_registrado.ogg")
+
     user_data.clear()
     return ConversationHandler.END
 

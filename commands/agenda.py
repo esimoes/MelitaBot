@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes
 from config import Config
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 

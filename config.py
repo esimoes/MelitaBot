@@ -22,6 +22,9 @@ class Config:
     CALENDAR_ID = load_env_variable('CALENDAR_ID', str)
     CALENDAR_ID_SEC = load_env_variable('CALENDAR_ID_SEC', str)
 
+    SPREADSHEET_ID=load_env_variable('SPREADSHEET_ID', str)
+    SPREADSHEET_SHEET=load_env_variable('SPREADSHEET_SHEET', str)
+
     logging_lvl = logging.DEBUG if DEBUG_FLAG else logging.INFO
 
     class InterceptLogsHandler(logging.Handler):

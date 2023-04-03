@@ -1,4 +1,4 @@
-python-telegram-bot==20.1
+python-telegram-bot==20.2
 python-telegram-bot[job-queue]
 google-api-python-client==2.82.0
 google-auth-httplib2==0.1.0

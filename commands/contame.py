@@ -1,5 +1,4 @@
 from telegram import Update
-from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes
 
 async def tellme(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
