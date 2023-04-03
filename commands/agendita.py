@@ -55,4 +55,4 @@ async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     except:
         print("error")
 
-get_calendar_command_handler = CommandHandler('agenda', get_calendar)
+get_calendar_command_handler = CommandHandler('agendita', get_calendar)
