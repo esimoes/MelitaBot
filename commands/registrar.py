@@ -172,11 +172,12 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         del user_data["choice"]
 
     if await save_calendar(user_data):
-      answer_message_text = (f"Hemos registrado el evento")
+      answer_message_text = (f"Listo! ya registraste tu evento en la Agendita de Melita")
     else:
       answer_message_text = (f"No he podido registrar el evento")
 
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
+    await update.message.reply_audio("./resources/audio/Evento_registrado.ogg")
     user_data.clear()
     return ConversationHandler.END
 

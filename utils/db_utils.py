@@ -3,7 +3,6 @@ from contextlib import asynccontextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-#from aiomysql.sa import create_engine
 
 from config import Config
 
@@ -18,11 +17,10 @@ async def get_session():
         async with async_session() as session:
             yield session
     except:
-#        await session.rollback()
+        await session.rollback()
         raise
     finally:
-#        await session.close()
-        pass
+        await session.close()
 
 
 def check_db() -> bool:

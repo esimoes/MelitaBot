@@ -6,6 +6,9 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from config import Config
 
+from utils.db_utils import get_session
+from utils.user import get_all_users
+
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
 service = build('calendar', 'v3', credentials=creds)
@@ -41,7 +44,9 @@ async def daily_update(context: CallbackContext) -> None:
             i += 1
             answer += "\n\n\n"
     answer_message_text = answer.replace('<br>','\n')
-    try:
-        await context.bot.send_message(chat_id=312722597, text=answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
-    except:
-        print("error")
+
+    async with get_session() as session:
+        users = await get_all_users(session, active_flag=True)
+    
+    for user in users:
+        await context.bot.send_message(chat_id=user.id, text=answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
