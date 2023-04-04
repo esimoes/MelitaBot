@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 
 from config import Config
 
-engine = create_async_engine(Config.DB_URL)
+engine = create_async_engine(Config.DB_URL,pool_recycle=3600)
 
 
 @asynccontextmanager

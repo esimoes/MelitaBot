@@ -4,3 +4,4 @@ from .registrar import set_calendar_command_handler
 from .verso import poem_command_handler
 from .contame import tellme_command_handler
 from .recomendaciones import recommendations_command_handler
+from .usuarios import get_users_command_handler

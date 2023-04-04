@@ -9,7 +9,8 @@ from commands import (start_command_handler,
                       poem_command_handler, 
                       tellme_command_handler,
                       set_calendar_command_handler,
-                      recommendations_command_handler)
+                      recommendations_command_handler,
+                      get_users_command_handler)
 
 from handlers import (error_handler, 
                       unknown_messages)
@@ -42,6 +43,7 @@ def main():
     application.add_handler(tellme_command_handler)
     application.add_handler(set_calendar_command_handler)
     application.add_handler(recommendations_command_handler)
+    application.add_handler(get_users_command_handler)
 
     # Register error handlers
     application.add_error_handler(error_handler)

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Column, TIMESTAMP, ForeignKey
-from sqlalchemy.dialects.postgresql import INTEGER, VARCHAR, BOOLEAN
+from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, BOOLEAN
 from sqlalchemy.orm import relationship
 
 from ..base import Base
