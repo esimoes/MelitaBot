@@ -178,7 +178,7 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
     if voice:
-      await update.message.reply_audio("./resources/audio/Evento_registrado.ogg")
+      await update.message.reply_audio("./resources/audio/Evento_registrado.mp3")
 
     user_data.clear()
     return ConversationHandler.END
