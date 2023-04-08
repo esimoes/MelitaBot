@@ -5,9 +5,10 @@ from sqlalchemy.dialects.mysql import INTEGER, VARCHAR, BOOLEAN
 from sqlalchemy.orm import relationship
 
 from ..base import Base
+from config import Config
 
 class User(Base):
-    __tablename__ = 'telegram_users'
+    __tablename__ = Config.USER_DB
 
     id = Column(INTEGER, primary_key=True)
     username = Column(VARCHAR(64), nullable=True)

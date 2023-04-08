@@ -43,10 +43,10 @@ async def daily_update(context: CallbackContext) -> None:
                 answer += "\nUbicación : {}".format(event['location'])
             i += 1
             answer += "\n\n\n"
-    answer_message_text = answer.replace('<br>','\n')
+        answer_message_text = answer.replace('<br>','\n')
 
-    async with get_session() as session:
-        users = await get_all_users(session, active_flag=True)
+        async with get_session() as session:
+            users = await get_all_users(session, active_flag=True)
     
-    for user in users:
-        await context.bot.send_message(chat_id=user.id, text=answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
+        for user in users:
+            await context.bot.send_message(chat_id=user.id, text=answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)

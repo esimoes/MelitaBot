@@ -10,7 +10,6 @@ from config import Config
 async def get_users(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
 
-    # Create a new user instance and add it to the database
     if user.id in [Config.DEV_ID, Config.OWNER_ID]:
         async with get_session() as session:
             users = await get_all_users(session)

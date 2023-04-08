@@ -18,6 +18,7 @@ class Config:
     OWNER_ID = load_env_variable('OWNER_ID', int)  # Bot owner Telegram id
     DEV_ID = load_env_variable('DEV_ID', int, False)  # Bot dev Telegram id
     DB_URL = load_env_variable('DB_URL')  # URL to your db # f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    USER_DB= load_env_variable('USER_DB', str)
 
     CALENDAR_ID = load_env_variable('CALENDAR_ID', str)
     CALENDAR_ID_SEC = load_env_variable('CALENDAR_ID_SEC', str)
