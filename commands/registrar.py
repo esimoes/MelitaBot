@@ -9,6 +9,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+from loguru import logger 
 from config import Config
 from datetime import datetime, timedelta
 from googleapiclient.discovery import build
@@ -156,7 +157,7 @@ async def save_calendar(user_data) -> bool:
     try:
       service = build('calendar', 'v3', credentials=creds)
       event = service.events().insert(calendarId=Config.CALENDAR_ID_SEC, body=event).execute()
-      print ('Event created: %s' % (event.get('htmlLink')))
+      logger.info('Event created: %s' % (event.get('htmlLink')))
       success = True
     except:
       success = False
@@ -166,27 +167,34 @@ async def save_calendar(user_data) -> bool:
 async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Display the gathered info and end the conversation."""
     user_data = context.user_data
+    user = update.effective_user
+    
     voice = False
+    log = ""
     if "choice" in user_data:
         del user_data["choice"]
 
     if await save_calendar(user_data):
       answer_message_text = (f"Listo! ya registraste tu evento en la Agendita de Melita")
+      log = f'Event register by {user.first_name} (id:{user.id})'
       voice = True
     else:
       answer_message_text = (f"No he podido registrar el evento")
+      log = f'Event could not be register, by {user.first_name} (id:{user.id})'
 
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
     if voice:
       await update.message.reply_audio("./resources/audio/Evento_registrado.mp3")
-
+    logger.info(log)
     user_data.clear()
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = context.user_data
+    user = update.effective_user
     answer_message_text = (f"Registro cancelado")
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
+    logger.info(f'Event register canceled by {user.first_name} (id:{user.id})')
     user_data.clear()
     return ConversationHandler.END
    
