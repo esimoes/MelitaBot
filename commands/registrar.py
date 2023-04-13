@@ -27,6 +27,7 @@ reply_keyboard = [
     ["Listo"],
     ["Cancelar"],
 ]
+register_message = ""
 
 markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True, one_time_keyboard=True)
 
@@ -157,7 +158,9 @@ async def save_calendar(user_data) -> bool:
     try:
       service = build('calendar', 'v3', credentials=creds)
       event = service.events().insert(calendarId=Config.CALENDAR_ID_SEC, body=event).execute()
-      logger.info('Event created: %s' % (event.get('htmlLink')))
+      global register_message
+      register_message = 'Event created: %s' % (event.get('htmlLink'))
+      logger.info(register_message)
       success = True
     except:
       success = False
@@ -175,11 +178,16 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         del user_data["choice"]
 
     if await save_calendar(user_data):
-      answer_message_text = (f"Listo! ya registraste tu evento en la Agendita de Melita")
+      answer_message_text = (f"Listo! ya registraste tu evento en la Agendita de Melita. Lo estaré revisando y pronto se podrá consultar con /agendita")
       log = f'Event register by {user.first_name} (id:{user.id})'
+      global register_message
+      register_message += f'\nEvento registrado por {user.first_name} (id:{user.id})'
+      for id in [Config.DEV_ID, Config.OWNER_ID]:
+        await context.bot.send_message(chat_id=id, text=register_message,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
+      register_message = ""
       voice = True
     else:
-      answer_message_text = (f"No he podido registrar el evento")
+      answer_message_text = (f"No he podido registrar el evento. No te olvides de ingresar la fecha y volvé a probar")
       log = f'Event could not be register, by {user.first_name} (id:{user.id})'
 
     await update.message.reply_text(answer_message_text,reply_markup=ReplyKeyboardRemove(),)
