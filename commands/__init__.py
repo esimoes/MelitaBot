@@ -7,3 +7,4 @@ from .recomendaciones import recommendations_command_handler
 from .usuarios import get_users_command_handler
 from .stream import stream_command_handler
 from .end   import end_command_handler
+from .mensaje import message_command_handler

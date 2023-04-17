@@ -1,14 +1,10 @@
-from telegram import Update
-from telegram.constants import ParseMode
-from telegram.ext import CommandHandler, ContextTypes, CallbackContext
-from datetime import datetime, timedelta, time
+from telegram.ext import CallbackContext
+from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 from config import Config
-from loguru import logger
 
-from utils.db_utils import get_session
-from utils.user import get_all_users
+from utils.send_message_db import send_message
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
@@ -46,14 +42,5 @@ async def daily_update(context: CallbackContext) -> None:
             answer += "\n\n\n"
         answer_message_text = answer.replace('<br>','\n')
 
-        async with get_session() as session:
-            users = await get_all_users(session, active_flag=True)
-    
-        for user in users:
-            try:
-                await context.bot.send_message(chat_id=user.id, text=answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
-            except:
-                error_message_text = f"User {user.first_name} id: {user.id} did not receive the msg, possibly bot was blocked"
-                logger.info(error_message_text)
-                await context.bot.send_message(chat_id=Config.DEV_ID, text=error_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
+        await send_message(context,answer_message_text)
             

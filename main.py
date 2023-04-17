@@ -12,7 +12,8 @@ from commands import (start_command_handler,
                       recommendations_command_handler,
                       get_users_command_handler,
                       stream_command_handler,
-                      end_command_handler)
+                      end_command_handler,
+                      message_command_handler)
 
 from handlers import (error_handler, 
                       unknown_messages)
@@ -36,7 +37,7 @@ def main():
     job_queue = application.job_queue
     # Create a job that runs daily at 9 a.m.
     timezone = datetime.timezone(datetime.timedelta(hours=-3))
-    job_queue.run_daily(daily_update, time=datetime.time(hour=8, minute=49,tzinfo=timezone))
+    job_queue.run_daily(daily_update, time=datetime.time(hour=8, minute=0,tzinfo=timezone))
 
     # Register commands
     application.add_handler(start_command_handler)
@@ -48,6 +49,7 @@ def main():
     application.add_handler(get_users_command_handler)
     application.add_handler(stream_command_handler)
     application.add_handler(end_command_handler)
+    application.add_handler(message_command_handler)
 
     # Register error handlers
     application.add_error_handler(error_handler)

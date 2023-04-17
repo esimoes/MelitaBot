@@ -20,7 +20,7 @@ async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
     days30 = (datetime.utcnow() + timedelta(days=30)).isoformat() + 'Z'
     events_result = service.events().list(calendarId=Config.CALENDAR_ID, timeMin=now,
-                                        timeMax=days30, maxResults=15, 
+                                        timeMax=days30, maxResults=10, 
                                         singleEvents=True, orderBy='startTime').execute()
     events = events_result.get('items', [])
 
@@ -32,27 +32,31 @@ async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     else:
         i = 1
         answer = ""
+        answer_message_text = []
         for event in events:       
-            answer += "\U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916" # Robot face
-            answer += "\n<b>{}</b>".format(event['summary']) 
+            answer_aux = "\U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916 \U0001F916" # Robot face
+            answer_aux += "\n<b>{}</b>".format(event['summary']) 
             if event.get('description'):
-                answer += "\n{}".format(event['description'])
+                answer_aux += "\n{}".format(event['description'])
             if event['start'].get('dateTime') is not None:
-                answer += "\n<b>Fecha : " + datetime.fromisoformat(event['start']['dateTime']).strftime("%d-%m-%Y") +"</b>"
-                answer += "\n<b>Hora : " + datetime.fromisoformat(event['start']['dateTime']).strftime("%H:%M") +"</b>"
+                answer_aux += "\n<b>Fecha : " + datetime.fromisoformat(event['start']['dateTime']).strftime("%d-%m-%Y") +"</b>"
+                answer_aux += "\n<b>Hora : " + datetime.fromisoformat(event['start']['dateTime']).strftime("%H:%M") +"</b>"
             elif event['start'].get('date') is not None:
-                answer += "\n<b>Desde : " + datetime.fromisoformat(event['start']['date']).strftime("%d-%m-%Y") +"</b>"
-                answer += "\n<b>Hasta : " + datetime.fromisoformat(event['end']['date']).strftime("%d-%m-%Y") +"</b>"
-                #answer += "\n*Hora : --*"
-            
+                answer_aux += "\n<b>Desde : " + datetime.fromisoformat(event['start']['date']).strftime("%d-%m-%Y") +"</b>"
+                answer_aux += "\n<b>Hasta : " + datetime.fromisoformat(event['end']['date']).strftime("%d-%m-%Y") +"</b>"            
             if 'location' in event.keys():
-                answer += "\nUbicación : {}".format(event['location'])
+                answer_aux += "\nUbicación : {}".format(event['location'])
             i += 1
-            answer += "\n\n\n"
-    answer_message_text = answer.replace('<br>','\n')
-    try:
-        await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
-    except:
-        print("error")
+            answer_aux += "\n\n\n"
+            answer_aux = answer_aux.replace('<br>','\n')
+            if len(answer)+len(answer_aux)<=4096:
+                answer += answer_aux
+            else:
+                answer_message_text.append(answer)
+                answer = answer_aux
+        answer_message_text.append(answer)        
+        for answers in answer_message_text:
+            await update.message.reply_text(answers,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
+
 
 get_calendar_command_handler = CommandHandler('agendita', get_calendar)
