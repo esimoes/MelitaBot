@@ -39,7 +39,7 @@ async def message_command(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 async def typing_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     global reply_message
-    reply_message = update.effective_message.text
+    reply_message = update.effective_message.text_html
     preview_message = "<pre>Vista previa del mensaje, si está correcto dale al botón 'Enviar'.</pre>"
     
     await update.message.reply_text(preview_message,parse_mode=ParseMode.HTML)
