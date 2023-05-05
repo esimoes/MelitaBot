@@ -15,7 +15,10 @@ async def get_users(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             users = await get_all_users(session)
 
         users_number = len(users)
-        start_message_text = (f"<pre>Hay un total de {users_number} usuarios</pre>")
+        start_message_text = (f"<pre>- Hay un total de {users_number} usuarios</pre>")
+        users_inactive =[user for user in users if not user.active]
+        count_inactive_users = len(users_inactive)
+        start_message_text += (f"\n<pre>- {count_inactive_users} están inactivos</pre>")
     else:
         start_message_text = (f"No puedo dejarte hacer eso.")
 

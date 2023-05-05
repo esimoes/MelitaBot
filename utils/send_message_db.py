@@ -11,7 +11,7 @@ from config import Config
 async def send_message(context: ContextTypes.DEFAULT_TYPE, broadcast_message_text) -> None:
 
     async with get_session() as session:
-        users = await get_all_users(session)
+        users = await get_all_users(session,active_flag=True)
 
     for user in users:
         try:
