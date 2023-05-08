@@ -26,6 +26,14 @@ class Config:
     SPREADSHEET_ID=load_env_variable('SPREADSHEET_ID', str)
     SPREADSHEET_SHEET=load_env_variable('SPREADSHEET_SHEET', str)
 
+    #####################
+    #   Twitch API vars #
+    #####################
+    TWITCH_CLIENT_ID = load_env_variable('TWITCH_CLIENT_ID', str)
+    TWITCH_CLIENT_SECRET = load_env_variable('TWITCH_CLIENT_SECRET', str)
+    TWITCH_CHANNEL_ID = load_env_variable('TWITCH_CHANNEL_ID', str)
+    TWITCH_STREAM_URL = load_env_variable('TWITCH_STREAM_URL', str)
+
     logging_lvl = logging.DEBUG if DEBUG_FLAG else logging.INFO
 
     class InterceptLogsHandler(logging.Handler):

@@ -15,6 +15,7 @@ async def send_message(context: ContextTypes.DEFAULT_TYPE, broadcast_message_tex
 
     for user in users:
         try:
+            logger.info(f'Sending message to {user.first_name} (id:{user.id})')
             await context.bot.send_message(chat_id=user.id, text=broadcast_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
         except:
             error_message_text = f"User {user.first_name} id: {user.id} did not receive the msg, possibly bot was blocked"

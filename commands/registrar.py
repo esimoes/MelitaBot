@@ -36,7 +36,7 @@ async def set_calendar_command(update: Update, context: ContextTypes.DEFAULT_TYP
     user = update.effective_user
     answer_message_text = (f"Hola {user.first_name}, para continuar con el registro quiero que me cuentes sobre el evento:")
     await update.message.reply_text(answer_message_text, reply_markup=markup)
-
+    logger.info(f'A new event register started by: {user.first_name} (id:{user.id})')
     return CHOOSING
 
 def facts_to_str(user_data: Dict[str, str]) -> str:

@@ -5,6 +5,7 @@ from config import Config
 from datetime import datetime, timedelta
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
+from loguru import logger
 
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
@@ -26,7 +27,7 @@ async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     answer_message_text = (f"Hola {user.first_name}, esta es la agenda del mes:")
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True)
-
+    logger.info(f'/agendita used by {user.first_name} (id:{user.id})')
     if not events:
         answer = "Lo siento, no tengo nada para mostrarte. Prueba en otro momento a que me actualice"
     else:

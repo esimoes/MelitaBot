@@ -10,7 +10,7 @@ from telegram.ext import (
     filters,
 )
 from config import Config
-
+from loguru import logger
 from utils.send_message_db import send_message
 
 TYPING_REPLY, FINISH = range(2)
@@ -28,13 +28,15 @@ async def message_command(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     user = update.effective_user
     if user.id in [Config.OWNER_ID]:
         answer_message_text = (f"<pre>Hola {user.first_name}, a continuación escribe el mensaje a enviar.</pre>")
+        logger.info(f'Started Message broadcast by {user.first_name} (id:{user.id})')
     else:
         answer_message_text = "No puedo dejarte hacer eso."
         await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML)
+        logger.info(f'No authorization - Message broadcast Attempt by {user.first_name} (id:{user.id})')
         return ConversationHandler.END
 
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,reply_markup=markup)
-
+    
     return TYPING_REPLY
 
 async def typing_reply(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -51,6 +53,7 @@ async def waiting_send(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     print ("esperando enviar mensaje")
 
 async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    user = update.effective_user
     global reply_message
     answer_message_text = '<pre>Se envió notificación.</pre>'
 
@@ -60,14 +63,16 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await send_message(context, reply_message)
     reply_message = ""
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True,reply_markup=ReplyKeyboardRemove())
-
+    logger.info(f'Message broadcast sended by {user.first_name} (id:{user.id})')
     return ConversationHandler.END
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
     global reply_message
     reply_message = ""
     answer_message_text = '<pre>Mensaje cancelado.</pre>'
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True,reply_markup=ReplyKeyboardRemove())
+    logger.info(f'Message broadcast canceled by {user.first_name} (id:{user.id})')
     return ConversationHandler.END
    
 message_command_handler = ConversationHandler(

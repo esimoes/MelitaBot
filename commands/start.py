@@ -1,13 +1,13 @@
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import CommandHandler, ContextTypes
-
+from loguru import logger
 from utils.db_utils import get_session
 from utils.user import create_or_update_user
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
-
+    logger.info(f'A new user just landed: {user.first_name} (id:{user.id})')
     # Create a new user instance and add it to the database
     async with get_session() as session:
         await create_or_update_user(session, user)
