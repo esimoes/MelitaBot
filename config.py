@@ -24,8 +24,8 @@ class Config:
     CALENDAR_ID_SEC = load_env_variable('CALENDAR_ID_SEC', str)
 
     SPREADSHEET_ID=load_env_variable('SPREADSHEET_ID', str)
-    SPREADSHEET_SHEET=load_env_variable('SPREADSHEET_SHEET', str)
-
+    SPREADSHEET_SHEET=load_env_variable('SPREADSHEET_SHEET_RECO', str)
+    SPREADSHEET_SHEET_FORTUNE=load_env_variable('SPREADSHEET_SHEET_FORTUNE', str)
     #####################
     #   Twitch API vars #
     #####################
