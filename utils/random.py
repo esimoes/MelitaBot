@@ -9,7 +9,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 creds = service_account.Credentials.from_service_account_file("credentials.json")
 service = build('sheets', 'v4', credentials=creds)
 
-def get_random_row_values(sheet_id, sheet_name,colum_cant=2) -> str:
+async def get_random_row_values(sheet_id, sheet_name,colum_cant=2) -> str:
 
     # Obtener los valores de la hoja de cálculo
     result = service.spreadsheets().values().get(spreadsheetId=sheet_id, range=sheet_name).execute()

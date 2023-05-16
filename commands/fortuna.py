@@ -49,7 +49,7 @@ async def fortuna(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     except:
         logger.info(f'Animation error for {user.first_name} (id:{user.id})')
 
-    await progress_msg.edit_text(text='<span class="tg-spoiler"><i>~ '+ random_message +' ~</i></span>', parse_mode="HTML")
+    await progress_msg.edit_text(text='<span class="tg-spoiler"><i>~ '+ await random_message +' ~</i></span>', parse_mode="HTML")
     logger.info(f'sent the message Fortuna to {user.first_name} (id:{user.id})')
 
 fortuna_command_handler = CommandHandler('fortuna', fortuna)
