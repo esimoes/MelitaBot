@@ -34,7 +34,6 @@ async def fortuna(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     logger.info(f'Fortuna for {user.first_name} (id:{user.id}) is...')
     random_message = get_random_row_values(sheet_id, sheet_name,1)
-    logger.info(f'"{random_message}"')
     # Bucle de animación
     progress = progress_bar(1)
     progress_msg = await context.bot.send_message(chat_id=user.id,text=progress)
@@ -48,8 +47,8 @@ async def fortuna(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         logger.info(f'Ended animation for {user.first_name} (id:{user.id})')
     except:
         logger.info(f'Animation error for {user.first_name} (id:{user.id})')
-
-    await progress_msg.edit_text(text='<span class="tg-spoiler"><i>~ '+ await random_message +' ~</i></span>', parse_mode="HTML")
-    logger.info(f'sent the message Fortuna to {user.first_name} (id:{user.id})')
+    message = await random_message
+    await progress_msg.edit_text(text='<span class="tg-spoiler"><i>~ '+ message +' ~</i></span>', parse_mode="HTML")
+    logger.info(f'sent the message Fortuna to {user.first_name} (id:{user.id}) + {message}')
 
 fortuna_command_handler = CommandHandler('fortuna', fortuna)
