@@ -30,6 +30,7 @@ async def get_calendar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     logger.info(f'/agendita used by {user.first_name} (id:{user.id})')
     if not events:
         answer = "Lo siento, no tengo nada para mostrarte. Prueba en otro momento a que me actualice"
+        await update.message.reply_text(answer,parse_mode=ParseMode.HTML,disable_web_page_preview=False)
     else:
         i = 1
         answer = ""
