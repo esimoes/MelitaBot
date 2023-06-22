@@ -1,10 +1,10 @@
-python-telegram-bot==20.2
+python-telegram-bot==20.3
 python-telegram-bot[job-queue]
-google-api-python-client==2.82.0
+google-api-python-client==2.88.0
 google-auth-httplib2==0.1.0
 loguru==0.6.0
-sqlalchemy==2.0.7
-psycopg2-binary==2.9.5
+sqlalchemy==2.0.15
+psycopg2-binary==2.9.6
 aiomysql==0.1.1
-pymysql==1.0.2
+pymysql==1.0.3
 greenlet==2.0.2

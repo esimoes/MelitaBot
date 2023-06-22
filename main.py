@@ -12,6 +12,7 @@ from commands import (start_command_handler,
                       recommendations_command_handler,
                       get_users_command_handler,
                       stream_command_handler,
+                      streamy_command_handler,
                       end_command_handler,
                       message_command_handler,
                       fortuna_command_handler)
@@ -50,6 +51,7 @@ def main():
     application.add_handler(recommendations_command_handler)
     application.add_handler(get_users_command_handler)
     application.add_handler(stream_command_handler)
+    application.add_handler(streamy_command_handler)
     application.add_handler(end_command_handler)
     application.add_handler(message_command_handler)
     application.add_handler(fortuna_command_handler)

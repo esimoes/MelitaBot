@@ -33,6 +33,9 @@ class Config:
     TWITCH_CLIENT_SECRET = load_env_variable('TWITCH_CLIENT_SECRET', str)
     TWITCH_CHANNEL_ID = load_env_variable('TWITCH_CHANNEL_ID', str)
     TWITCH_STREAM_URL = load_env_variable('TWITCH_STREAM_URL', str)
+    # Youtube API
+    YOUTUBE_API_KEY = load_env_variable('YOUTUBE_API_KEY', str)
+
 
     logging_lvl = logging.DEBUG if DEBUG_FLAG else logging.INFO
 
