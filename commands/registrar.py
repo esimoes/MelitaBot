@@ -97,7 +97,7 @@ async def convert_date(user_data) -> str:
 async def received_information(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Store info provided by user and ask for the next category."""
     user_data = context.user_data
-    text = update.message.text
+    text = update.message.text_html
     
     if user_data["choice"] == "Fecha y hora":
       if not await check_date(update.message.text):
@@ -111,7 +111,7 @@ async def received_information(update: Update, context: ContextTypes.DEFAULT_TYP
 
     answer_message_text = (f"¡Entendido!Esto es lo que me contaste hasta el momento:\n{facts_to_str(user_data)}\nPuedes contarme más, o cambiar algún dato.")
 
-    await update.message.reply_text(answer_message_text, reply_markup=markup,)
+    await update.message.reply_text(answer_message_text, reply_markup=markup,parse_mode=ParseMode.HTML)
 
     return CHOOSING
 
