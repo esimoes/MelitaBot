@@ -5,8 +5,7 @@ import logging
 import sys
 
 from commands import (start_command_handler, 
-                      get_calendar_command_handler, 
-                      poem_command_handler, 
+                      get_calendar_command_handler,
                       tellme_command_handler,
                       set_calendar_command_handler,
                       recommendations_command_handler,
@@ -45,7 +44,6 @@ def main():
     # Register commands
     application.add_handler(start_command_handler)
     application.add_handler(get_calendar_command_handler)
-    application.add_handler(poem_command_handler)
     application.add_handler(tellme_command_handler)
     application.add_handler(set_calendar_command_handler)
     application.add_handler(recommendations_command_handler)

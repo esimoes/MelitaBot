@@ -5,6 +5,7 @@ from telegram.ext import CommandHandler, ContextTypes
 from utils.send_message_db import send_message
 from loguru import logger
 from config import Config
+from utils.decorators import restricted
 import requests
 
 url_stream=Config.TWITCH_STREAM_URL
@@ -74,23 +75,20 @@ async def message_stream_with_api() -> str:
     
     return stream_message_text
 
+@restricted
 async def stream(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     broadcast_message_text = ""
     
-    if user.id in [Config.DEV_ID, Config.OWNER_ID]:
-        logger.info(f'Sending stream message by {user.first_name} (id:{user.id})')
+    logger.info(f'Sending stream message by {user.first_name} (id:{user.id})')
 
-        broadcast_message_text = await message_stream_with_api()
+    broadcast_message_text = await message_stream_with_api()
 
-        if broadcast_message_text == "":
-            broadcast_message_text = f'Prendé <b>PODER ALIEN</b> que ya estamos en <a href="{url_stream}">Twitch</a>'
+    if broadcast_message_text == "":
+        broadcast_message_text = f'Prendé <b>PODER ALIEN</b> que ya estamos en <a href="{url_stream}">Twitch</a>'
 
-        await send_message(context, broadcast_message_text)
-        answer_message_text = '<pre>Se envió notificación.</pre>'
-    else:
-        logger.info(f'No authorization - Attempt sending stream message by {user.first_name} (id:{user.id})')
-        answer_message_text = "No puedo dejarte hacer eso."
+    await send_message(context, broadcast_message_text)
+    answer_message_text = '<pre>Se envió notificación.</pre>'
 
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True)
 

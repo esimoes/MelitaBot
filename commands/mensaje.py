@@ -9,8 +9,8 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from config import Config
 from loguru import logger
+from utils.decorators import restricted
 from utils.send_message_db import send_message
 
 TYPING_REPLY, FINISH = range(2)
@@ -23,17 +23,13 @@ reply_message = ""
 
 markup = ReplyKeyboardMarkup(reply_keyboard, resize_keyboard=True, one_time_keyboard=True)
 
+@restricted
 async def message_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Start the conversation and ask user for input."""
     user = update.effective_user
-    if user.id in [Config.OWNER_ID]:
-        answer_message_text = (f"<pre>Hola {user.first_name}, a continuación escribe el mensaje a enviar.</pre>")
-        logger.info(f'Started Message broadcast by {user.first_name} (id:{user.id})')
-    else:
-        answer_message_text = "No puedo dejarte hacer eso."
-        await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML)
-        logger.info(f'No authorization - Message broadcast Attempt by {user.first_name} (id:{user.id})')
-        return ConversationHandler.END
+
+    answer_message_text = (f"<pre>Hola {user.first_name}, a continuación escribe el mensaje a enviar.</pre>")
+    logger.info(f'Started Message broadcast by {user.first_name} (id:{user.id})')
 
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,reply_markup=markup)
     

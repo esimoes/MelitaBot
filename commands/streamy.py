@@ -5,6 +5,7 @@ from telegram.ext import CommandHandler, ContextTypes
 from utils.send_message_db import send_message
 from loguru import logger
 from config import Config
+from utils.decorators import restricted
 
 from googleapiclient.discovery import build
 
@@ -34,25 +35,22 @@ async def get_youtube_live(channel_id):
 
     return None
 
+@restricted
 async def streamy(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     broadcast_message_text = ""
     
-    if user.id in [Config.DEV_ID, Config.OWNER_ID]:
-        logger.info(f'Sending youtube message by {user.first_name} (id:{user.id})')
-        broadcast_message_text = 'https://www.youtube.com/live/'
-        video_id = await get_youtube_live("UCi04K9eRbtzWpWmSVSnfr7Q")
+    logger.info(f'Sending youtube message by {user.first_name} (id:{user.id})')
+    broadcast_message_text = 'https://www.youtube.com/live/'
+    video_id = await get_youtube_live("UCi04K9eRbtzWpWmSVSnfr7Q")
 
-        if video_id == None:
-            broadcast_message_text = f'Prendé <b>"Ponete el Chip"</b> que ya estamos en <a href="https://www.youtube.com/@chiptecno">Youtube</a>'
-        else:
-            broadcast_message_text += video_id
-            
-        await send_message(context, broadcast_message_text)
-        answer_message_text = '<pre>Se envió notificación.</pre>'
+    if video_id == None:
+        broadcast_message_text = f'Prendé <b>"Ponete el Chip"</b> que ya estamos en <a href="https://www.youtube.com/@chiptecno">Youtube</a>'
     else:
-        logger.info(f'No authorization - Attempt sending stream message by {user.first_name} (id:{user.id})')
-        answer_message_text = "No puedo dejarte hacer eso."
+        broadcast_message_text += video_id
+            
+    await send_message(context, broadcast_message_text)
+    answer_message_text = '<pre>Se envió notificación.</pre>'
 
     await update.message.reply_text(answer_message_text,parse_mode=ParseMode.HTML,disable_web_page_preview=True)
 
