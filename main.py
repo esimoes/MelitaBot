@@ -14,7 +14,8 @@ from commands import (start_command_handler,
                       streamy_command_handler,
                       end_command_handler,
                       message_command_handler,
-                      fortuna_command_handler)
+                      fortuna_command_handler,
+                      sendcalendar_command_handler)
 
 from handlers import (error_handler, 
                       unknown_messages,
@@ -53,6 +54,7 @@ def main():
     application.add_handler(end_command_handler)
     application.add_handler(message_command_handler)
     application.add_handler(fortuna_command_handler)
+    application.add_handler(sendcalendar_command_handler)
     application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), answer_messages))
 
     # Register error handlers
