@@ -10,3 +10,4 @@ from .end   import end_command_handler
 from .mensaje import message_command_handler
 from .fortuna import fortuna_command_handler
 from .enviaragenda import sendcalendar_command_handler
+from .borrarmensaje import delete_command_handler
