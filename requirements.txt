@@ -6,5 +6,5 @@ loguru==0.7.0
 sqlalchemy==2.0.15
 psycopg2-binary==2.9.6
 aiomysql==0.1.1
-pymysql==1.0.3
+pymysql==1.1.1
 greenlet==2.0.2
