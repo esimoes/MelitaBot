@@ -47,13 +47,6 @@ async def message_stream_with_api() -> str:
         "Client-ID": Config.TWITCH_CLIENT_ID
         }
 
-    # For channel ID info    
-#    url = 'https://api.twitch.tv/helix/users?login=elglitch404'
-#
-#    logger.info(f'requesting to {url} with headers={headers}')
-#    response = requests.get(url, headers=headers)
-#    logger.info(f'{response}')
-
     # Hacer una solicitud a la API de Twitch
     url = f'https://api.twitch.tv/helix/channels?broadcaster_id={channel_id}'
 
