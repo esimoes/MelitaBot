@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     err_msg_len = 1000 - 4  # Because "...\n" used
 
-    logger.error(msg="Exception while handling an update:", exc_info=context.error)
+    logger.error(msg="Exception while handling an update.")
 
     tb_list = traceback.format_exception(None, context.error, context.error.__traceback__)
     tb_string = "".join(tb_list)
@@ -34,11 +34,16 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     )
     msg3 = f"<pre>{html.escape(tb_string)}</pre>"
 
-    await context.bot.send_message(chat_id=Config.DEV_ID, text=msg, parse_mode=ParseMode.HTML)
-    await context.bot.send_message(chat_id=Config.DEV_ID, text=msg2, parse_mode=ParseMode.HTML)
-    await context.bot.send_message(chat_id=Config.DEV_ID, text=msg3, parse_mode=ParseMode.HTML)
+    try:
+        await context.bot.send_message(chat_id=Config.DEV_ID, text=msg, parse_mode=ParseMode.HTML)
+        await context.bot.send_message(chat_id=Config.DEV_ID, text=msg2, parse_mode=ParseMode.HTML)
+        await context.bot.send_message(chat_id=Config.DEV_ID, text=msg3, parse_mode=ParseMode.HTML)
+    except:
+        logger.error(msg="Error sending error message.")
 
     # Inform user
     error_text = 'Perdón, algo salió mal. Ya he notificado al desarrollador.'
-
-    await update.effective_message.reply_text(text=error_text, reply_to_message_id=update.effective_message)
+    try:
+        await update.effective_message.reply_text(text=error_text, reply_to_message_id=update.effective_message)
+    except:
+        logger.error(msg="Error sending reply. httpx error")

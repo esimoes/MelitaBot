@@ -1,4 +1,5 @@
 import logging
+import logging.config
 import sys
 from warnings import filterwarnings
 
@@ -57,12 +58,13 @@ class Config:
 
     format = ('<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name: '
               '<20.20}</cyan> | <level>{message}</level> ')
-
+    
     logger.remove()
     logger.add(sys.stderr, format=format)
     logger.level("DEBUG", color="<fg #787878>")
     logger.level("INFO", color="<fg #ffffff>")
 
+    logging.getLogger("httpx").setLevel("CRITICAL")
     logging.basicConfig(handlers=[InterceptLogsHandler()], level=logging_lvl, force=True)
 
     if not DEBUG_FLAG:

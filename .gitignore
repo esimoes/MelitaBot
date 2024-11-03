@@ -153,3 +153,4 @@ cython_debug/
 credentials.json
 .vscode/
 .vscode/launch.json
+docker-compose.yml
