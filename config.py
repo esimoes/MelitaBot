@@ -1,6 +1,7 @@
 import logging
 import logging.config
 import sys
+import os
 from warnings import filterwarnings
 
 from loguru import logger
@@ -59,9 +60,12 @@ class Config:
     format = ('<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name: '
               '<20.20}</cyan> | <level>{message}</level> ')\
 
+    log_directory = os.path.expanduser("~/melita_logs")
+    log_file = os.path.join(log_directory, "melita.log")
+
     logger.remove()
     logger.add(sys.stderr, format=format)
-    logger.add("/var/log/melitabot/melita.log", format=format, rotation="50 MB")
+    logger.add(log_file, format=format, rotation="50 MB")
     logger.level("DEBUG", color="<fg #787878>")
     logger.level("INFO", color="<fg #ffffff>")
 
