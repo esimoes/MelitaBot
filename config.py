@@ -57,10 +57,11 @@ class Config:
             logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
     format = ('<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name: '
-              '<20.20}</cyan> | <level>{message}</level> ')
-    
+              '<20.20}</cyan> | <level>{message}</level> ')\
+
     logger.remove()
     logger.add(sys.stderr, format=format)
+    logger.add("/var/log/melitabot/melita.log", format=format, rotation="50 MB")
     logger.level("DEBUG", color="<fg #787878>")
     logger.level("INFO", color="<fg #ffffff>")
 
