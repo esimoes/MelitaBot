@@ -60,7 +60,12 @@ class Config:
     format = ('<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name: '
               '<20.20}</cyan> | <level>{message}</level> ')\
 
+
     log_directory = os.path.expanduser("~/melita_logs")
+    
+    if not os.path.exists(log_directory):
+        os.makedirs(log_directory)
+
     log_file = os.path.join(log_directory, "melita.log")
 
     logger.remove()
